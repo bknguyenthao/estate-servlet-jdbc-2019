@@ -298,7 +298,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	}
 
 	@Override
-	public List<T> findById(Long id) {
+	public T findById(Long id) {
 		AnnotationMapper<T> annotationMapper = new AnnotationMapper<>();
 		Connection conn = null;
 		PreparedStatement statement = null;
@@ -310,6 +310,41 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			if (conn != null) {
 				statement = conn.prepareStatement(sql);
 				statement.setObject(1, id);
+				resultSet = statement.executeQuery();
+				return annotationMapper.mapRow(resultSet, this.zClass).get(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+				statement.close();
+				resultSet.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<T> findAll() {
+		AnnotationMapper<T> annotationMapper = new AnnotationMapper<>();
+		Connection conn = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			Class.forName(JDBC_DRIVER);
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			String tableName = "";
+			if (this.zClass.isAnnotationPresent(Table.class)) {
+				Table table = this.zClass.getAnnotation(Table.class);
+				tableName = table.name();
+			}
+			String sql = "select * from " + tableName;
+			if (conn != null) {
+				statement = conn.prepareStatement(sql);
 				resultSet = statement.executeQuery();
 				return annotationMapper.mapRow(resultSet, this.zClass);
 			}

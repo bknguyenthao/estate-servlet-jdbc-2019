@@ -2,6 +2,7 @@ package com.laptrinhjavaweb.service;
 
 import com.laptrinhjavaweb.utils.BuildingConverter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.laptrinhjavaweb.dto.BuildingDTO;
@@ -43,14 +44,24 @@ public class BuildingService implements IBuildingService {
 
 	@Override
 	public BuildingDTO findById(Long id) {
-		List<BuildingEntity> listBuildingEntity = buildingRepository.findById(id);
-		if (listBuildingEntity.size() == 0) {
-			return null;
-		}
-		BuildingEntity buildingEntity = listBuildingEntity.get(0);
+		BuildingEntity buildingEntity = buildingRepository.findById(id);
 		BuildingConverter buildingConverter = new BuildingConverter();
 		BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingEntity);
 		return buildingDTO;
+	}
+
+	@Override
+	public List<BuildingDTO> findAll() {
+		List<BuildingEntity> listBuildingEntity = buildingRepository.findAll();
+		if (listBuildingEntity.size() == 0) {
+			return null;
+		}
+		List<BuildingDTO> listBuildingDTO = new ArrayList<BuildingDTO>();
+		BuildingConverter buildingConverter = new BuildingConverter();
+		for (int i = 0; i < listBuildingEntity.size(); i++) {
+			listBuildingDTO.add(buildingConverter.convertToDTO(listBuildingEntity.get(i)));
+		}
+		return listBuildingDTO;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.api;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -73,6 +74,9 @@ public class BuildingAPI extends HttpServlet {
 			Long id = Long.parseLong(request.getParameter("id"));
 			BuildingDTO buildingDTO = buildingService.findById(id);
 			objectMapper.writeValue(response.getOutputStream(), buildingDTO);
+		} else {
+			List<BuildingDTO> listBuildingDTO = buildingService.findAll();
+			objectMapper.writeValue(response.getOutputStream(), listBuildingDTO);
 		}
 	}
 }

@@ -1,5 +1,7 @@
 package com.laptrinhjavaweb.service;
 
+import java.util.List;
+
 import com.laptrinhjavaweb.dto.BuildingDTO;
 
 public interface IBuildingService {
@@ -10,4 +12,6 @@ public interface IBuildingService {
 	void delete(BuildingDTO buildingDTO);
 
 	BuildingDTO findById(Long id);
+
+	List<BuildingDTO> findAll();
 }
