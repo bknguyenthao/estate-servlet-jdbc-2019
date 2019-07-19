@@ -58,10 +58,19 @@ public class BuildingAPI extends HttpServlet {
 		// BuildingDTO buildingDTO =
 		// HandlerJSON.of(request.getReader()).toModel(BuildingDTO.class);
 		// get JSON from request then convert to DTO object
-		BuildingDTO buildingDTO = objectMapper.readValue(HandlerJSON.getJSON(request), BuildingDTO.class);
+//		BuildingDTO buildingDTO = objectMapper.readValue(HandlerJSON.getJSON(request), BuildingDTO.class);
+//
+//		buildingService.delete(buildingDTO);
+//		objectMapper.writeValue(response.getOutputStream(), "delete success");
 
-		buildingService.delete(buildingDTO);
-		objectMapper.writeValue(response.getOutputStream(), "delete success");
+		String idStr = request.getParameter("id");
+		if (idStr != null) {
+			Long id = Long.parseLong(idStr);
+			buildingService.delete(id);
+			objectMapper.writeValue(response.getOutputStream(), "delete success");
+		} else {
+			objectMapper.writeValue(response.getOutputStream(), "id null");
+		}
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -71,12 +80,11 @@ public class BuildingAPI extends HttpServlet {
 
 		String idStr = request.getParameter("id");
 		if (idStr != null) {
-			Long id = Long.parseLong(request.getParameter("id"));
+			Long id = Long.parseLong(idStr);
 			BuildingDTO buildingDTO = buildingService.findById(id);
 			objectMapper.writeValue(response.getOutputStream(), buildingDTO);
 		} else {
-			List<BuildingDTO> listBuildingDTO = buildingService.findAll();
-			objectMapper.writeValue(response.getOutputStream(), listBuildingDTO);
+			objectMapper.writeValue(response.getOutputStream(), "id null");
 		}
 	}
 }

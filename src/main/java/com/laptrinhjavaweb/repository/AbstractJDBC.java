@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -258,26 +259,17 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	}
 
 	@Override
-	public void delete(Object object) {
+	public void delete(Long id) {
 		Connection conn = null;
 		PreparedStatement statement = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			conn.setAutoCommit(false);
-			Class<?> zClass = object.getClass();
-			String sql = createSQLDelete(zClass);
+			String sql = createSQLDelete();
 			if (conn != null) {
 				statement = conn.prepareStatement(sql);
-				Field[] fields = getAllFieldOfClass(zClass);
-				for (int i = 0; i < fields.length; i++) {
-					Field field = fields[i];
-					field.setAccessible(true);
-					if (field.getName().equals("id")) {
-						statement.setObject(1, field.get(object));
-						break;
-					}
-				}
+				statement.setObject(1, id);
 				statement.executeUpdate();
 				conn.commit();
 			}
@@ -328,24 +320,24 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	}
 
 	@Override
-	public List<T> findAll() {
+	public List<T> findAll(Map<String, Object> properties) {
 		AnnotationMapper<T> annotationMapper = new AnnotationMapper<>();
 		Connection conn = null;
-		PreparedStatement statement = null;
+		Statement statement = null;
 		ResultSet resultSet = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-			String tableName = "";
-			if (this.zClass.isAnnotationPresent(Table.class)) {
-				Table table = this.zClass.getAnnotation(Table.class);
-				tableName = table.name();
-			}
-			String sql = "select * from " + tableName;
+//			String tableName = "";
+//			if (this.zClass.isAnnotationPresent(Table.class)) {
+//				Table table = this.zClass.getAnnotation(Table.class);
+//				tableName = table.name();
+//			}
+			String sql = createSQLFindAll(properties);
 			if (conn != null) {
-				statement = conn.prepareStatement(sql);
-				resultSet = statement.executeQuery();
+				statement = conn.createStatement();
+				resultSet = statement.executeQuery(sql);
 				return annotationMapper.mapRow(resultSet, this.zClass);
 			}
 		} catch (Exception e) {
@@ -362,6 +354,19 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		return null;
 	}
 
+	private String createSQLFindAll(Map<String, Object> properties) {
+		String tableName = "";
+		if (this.zClass.isAnnotationPresent(Table.class)) {
+			Table table = this.zClass.getAnnotation(Table.class);
+			tableName = table.name();
+		}
+		StringBuilder result = new StringBuilder("select * from " + tableName);
+		if (properties != null && properties.size() > 0) {
+
+		}
+		return result.toString();
+	}
+
 	private String createSQLSelect() {
 		String sqlReturn = "select * from ";
 		String tableName = "";
@@ -373,11 +378,11 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		return sqlReturn;
 	}
 
-	private String createSQLDelete(Class<?> zClass) {
+	private String createSQLDelete() {
 		String sqlReturn = "delete from ";
 		String tableName = "";
-		if (zClass.isAnnotationPresent(Table.class)) {
-			Table table = zClass.getAnnotation(Table.class);
+		if (this.zClass.isAnnotationPresent(Table.class)) {
+			Table table = this.zClass.getAnnotation(Table.class);
 			tableName = table.name();
 		}
 		sqlReturn += tableName + " where id = ?";

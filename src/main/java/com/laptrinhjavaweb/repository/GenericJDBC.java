@@ -16,9 +16,9 @@ public interface GenericJDBC<T> {
 
 	void update(Object object);
 
-	void delete(Object object);
-	
+	void delete(Long id);
+
 	T findById(Long id);
-	
-	List<T> findAll();
+
+	List<T> findAll(Object... objects);
 }

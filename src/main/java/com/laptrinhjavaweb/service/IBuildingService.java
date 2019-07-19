@@ -9,7 +9,7 @@ public interface IBuildingService {
 
 	void update(BuildingDTO buildingDTO);
 
-	void delete(BuildingDTO buildingDTO);
+	void delete(Long id);
 
 	BuildingDTO findById(Long id);
 
