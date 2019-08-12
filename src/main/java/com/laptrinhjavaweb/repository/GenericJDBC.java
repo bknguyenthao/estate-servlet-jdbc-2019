@@ -1,6 +1,9 @@
 package com.laptrinhjavaweb.repository;
 
 import java.util.List;
+import java.util.Map;
+
+import com.laptrinhjavaweb.paging.Pageble;
 
 public interface GenericJDBC<T> {
 
@@ -20,5 +23,5 @@ public interface GenericJDBC<T> {
 
 	T findById(Long id);
 
-	List<T> findAll(Object... objects);
+	List<T> findAll(Map<String, Object> properties, Pageble pageble, Object... where);
 }

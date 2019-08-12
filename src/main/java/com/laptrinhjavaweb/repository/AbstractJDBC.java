@@ -17,6 +17,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.laptrinhjavaweb.annotation.Column;
 import com.laptrinhjavaweb.annotation.Table;
+import com.laptrinhjavaweb.paging.Pageble;
+import com.laptrinhjavaweb.paging.Sorter;
 import com.laptrinhjavaweb.utils.AnnotationMapper;
 import com.laptrinhjavaweb.utils.CustomMapper;
 
@@ -320,7 +322,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	}
 
 	@Override
-	public List<T> findAll(Map<String, Object> properties) {
+	public List<T> findAll(Map<String, Object> properties, Pageble pageble, Object... where) {
 		AnnotationMapper<T> annotationMapper = new AnnotationMapper<>();
 		Connection conn = null;
 		Statement statement = null;
@@ -329,15 +331,22 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-//			String tableName = "";
-//			if (this.zClass.isAnnotationPresent(Table.class)) {
-//				Table table = this.zClass.getAnnotation(Table.class);
-//				tableName = table.name();
-//			}
-			String sql = createSQLFindAll(properties);
+			StringBuilder sql = createSQLFindAll(properties);
+			if (where != null && where.length > 0) {
+				sql.append(where[0]);
+			}
+			if (pageble != null) {
+				if (pageble.getOffset() != null && pageble.getLimit() != null) {
+					sql.append(" limit" + pageble.getOffset() + ", " + pageble.getLimit() + "");
+				}
+				if (pageble.getSorter() != null) {
+					Sorter sorter = pageble.getSorter();
+					sql.append(" order by " + sorter.getSortName() + " " + sorter.getSortBy() + "");
+				}
+			}
 			if (conn != null) {
 				statement = conn.createStatement();
-				resultSet = statement.executeQuery(sql);
+				resultSet = statement.executeQuery(sql.toString());
 				return annotationMapper.mapRow(resultSet, this.zClass);
 			}
 		} catch (Exception e) {
@@ -354,17 +363,31 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		return null;
 	}
 
-	private String createSQLFindAll(Map<String, Object> properties) {
+	private StringBuilder createSQLFindAll(Map<String, Object> properties) {
 		String tableName = "";
 		if (this.zClass.isAnnotationPresent(Table.class)) {
 			Table table = this.zClass.getAnnotation(Table.class);
 			tableName = table.name();
 		}
-		StringBuilder result = new StringBuilder("select * from " + tableName);
+		StringBuilder result = new StringBuilder("select * from " + tableName + "where 1 = 1 ");
 		if (properties != null && properties.size() > 0) {
-
+			String[] params = new String[properties.size()];
+			Object[] values = new Object[properties.size()];
+			int i = 0;
+			for (Map.Entry<?, ?> item : properties.entrySet()) {
+				params[i] = (String) item.getKey();
+				values[i] = item.getValue();
+				i++;
+			}
+			for (int j = 0; j < params.length; j++) {
+				if (values[i] instanceof String) {
+					result.append(" and lower(" + params[i] + ") like '%" + values[i] + "%' ");
+				} else if (values[i] instanceof Integer) {
+					result.append(" and " + params[i] + " = " + values[i] + " ");
+				}
+			}
 		}
-		return result.toString();
+		return result;
 	}
 
 	private String createSQLSelect() {

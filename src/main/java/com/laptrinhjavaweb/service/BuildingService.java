@@ -43,6 +43,9 @@ public class BuildingService implements IBuildingService {
 	@Override
 	public BuildingDTO findById(Long id) {
 		BuildingEntity buildingEntity = buildingRepository.findById(id);
+		if (buildingEntity == null) {
+			return null;
+		}
 		BuildingConverter buildingConverter = new BuildingConverter();
 		BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingEntity);
 		return buildingDTO;
@@ -50,16 +53,17 @@ public class BuildingService implements IBuildingService {
 
 	@Override
 	public List<BuildingDTO> findAll() {
-		List<BuildingEntity> listBuildingEntity = buildingRepository.findAll();
-		if (listBuildingEntity.size() == 0) {
-			return null;
-		}
-		List<BuildingDTO> listBuildingDTO = new ArrayList<BuildingDTO>();
-		BuildingConverter buildingConverter = new BuildingConverter();
-		for (int i = 0; i < listBuildingEntity.size(); i++) {
-			listBuildingDTO.add(buildingConverter.convertToDTO(listBuildingEntity.get(i)));
-		}
-		return listBuildingDTO;
+//		List<BuildingEntity> listBuildingEntity = buildingRepository.findAll();
+//		if (listBuildingEntity.size() == 0) {
+//			return null;
+//		}
+//		List<BuildingDTO> listBuildingDTO = new ArrayList<BuildingDTO>();
+//		BuildingConverter buildingConverter = new BuildingConverter();
+//		for (int i = 0; i < listBuildingEntity.size(); i++) {
+//			listBuildingDTO.add(buildingConverter.convertToDTO(listBuildingEntity.get(i)));
+//		}
+//		return listBuildingDTO;
+		return null;
 	}
 
 }
