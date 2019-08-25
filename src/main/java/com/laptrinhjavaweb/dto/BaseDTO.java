@@ -10,6 +10,7 @@ public class BaseDTO {
 	private Timestamp modifiedDate;
 	private int maxPageItem = 10;
 	private int currentPage = 1;
+	private String action;
 
 	public Long getId() {
 		return id;
@@ -66,5 +67,13 @@ public class BaseDTO {
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 	}
-	
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
 }
