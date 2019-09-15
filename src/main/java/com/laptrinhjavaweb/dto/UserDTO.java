@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.dto;
 
-public class UserDTO extends BaseDTO {
+public class UserDTO extends BaseDTO<UserDTO> {
 	private String userName;
 	private String password;
 	private String fullName;

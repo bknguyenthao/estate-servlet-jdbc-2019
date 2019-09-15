@@ -29,7 +29,7 @@ public class BuildingEntity extends BaseEntity {
 	private String structure;
 
 	@Column(name = "costrent")
-	private Integer costrent;
+	private Integer costRent;
 
 	@Column(name = "costdescription")
 	private String costDescription;
@@ -69,6 +69,12 @@ public class BuildingEntity extends BaseEntity {
 
 	@Column(name = "buildingtype")
 	private String buildingType;
+	
+	@Column(name = "direction")
+	private String direction;
+	
+	@Column(name = "level")
+	private String level;
 
 	public String getName() {
 		return name;
@@ -126,12 +132,12 @@ public class BuildingEntity extends BaseEntity {
 		this.structure = structure;
 	}
 
-	public Integer getCostrent() {
-		return costrent;
+	public Integer getCostRent() {
+		return costRent;
 	}
 
-	public void setCostrent(Integer costrent) {
-		this.costrent = costrent;
+	public void setCostRent(Integer costRent) {
+		this.costRent = costRent;
 	}
 
 	public String getCostDescription() {
@@ -236,6 +242,22 @@ public class BuildingEntity extends BaseEntity {
 
 	public void setBuildingType(String buildingType) {
 		this.buildingType = buildingType;
+	}
+
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
 	}
 
 	

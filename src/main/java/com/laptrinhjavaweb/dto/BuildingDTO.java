@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.dto;
 
-public class BuildingDTO extends BaseDTO {
+public class BuildingDTO extends BaseDTO<BuildingDTO> {
 	private String name;
 	private Integer numberOfBasement;
 	private Integer buildingArea;
@@ -8,7 +8,7 @@ public class BuildingDTO extends BaseDTO {
 	private String ward;
 	private String street;
 	private String structure;
-	private Integer costrent;
+	private Integer costRent;
 	private String costDescription;
 	private String serviceCost;
 	private String carCost;
@@ -22,6 +22,13 @@ public class BuildingDTO extends BaseDTO {
 	private String managerName;
 	private String managerPhone;
 	private String buildingType;
+	private String direction;
+	private String level;
+	private Integer costRentFrom;
+	private Integer costRentTo;
+	private Integer areaFrom;
+	private Integer areaTo;
+	private String[] buildingTypes;
 
 	public String getName() {
 		return name;
@@ -77,14 +84,6 @@ public class BuildingDTO extends BaseDTO {
 
 	public void setStructure(String structure) {
 		this.structure = structure;
-	}
-
-	public Integer getCostrent() {
-		return costrent;
-	}
-
-	public void setCostrent(Integer costrent) {
-		this.costrent = costrent;
 	}
 
 	public String getCostDescription() {
@@ -191,4 +190,69 @@ public class BuildingDTO extends BaseDTO {
 		this.buildingType = buildingType;
 	}
 
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+	public Integer getCostRent() {
+		return costRent;
+	}
+
+	public void setCostRent(Integer costRent) {
+		this.costRent = costRent;
+	}
+
+	public Integer getCostRentFrom() {
+		return costRentFrom;
+	}
+
+	public void setCostRentFrom(Integer costRentFrom) {
+		this.costRentFrom = costRentFrom;
+	}
+
+	public Integer getCostRentTo() {
+		return costRentTo;
+	}
+
+	public void setCostRentTo(Integer costRentTo) {
+		this.costRentTo = costRentTo;
+	}
+
+	public Integer getAreaFrom() {
+		return areaFrom;
+	}
+
+	public void setAreaFrom(Integer areaFrom) {
+		this.areaFrom = areaFrom;
+	}
+
+	public Integer getAreaTo() {
+		return areaTo;
+	}
+
+	public void setAreaTo(Integer areaTo) {
+		this.areaTo = areaTo;
+	}
+
+	public String[] getBuildingTypes() {
+		return buildingTypes;
+	}
+
+	public void setBuildingTypes(String[] buildingTypes) {
+		this.buildingTypes = buildingTypes;
+	}
+
+	
 }
