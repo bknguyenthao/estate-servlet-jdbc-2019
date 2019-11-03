@@ -1,8 +1,10 @@
 package com.laptrinhjavaweb.controller.admin;
 
-import java.awt.print.Pageable;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +16,6 @@ import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.paging.PageRequest;
 import com.laptrinhjavaweb.paging.Pageble;
-import com.laptrinhjavaweb.service.BuildingService;
 import com.laptrinhjavaweb.service.IBuildingService;
 import com.laptrinhjavaweb.utils.HandlerSubmit;
 
@@ -22,13 +23,8 @@ import com.laptrinhjavaweb.utils.HandlerSubmit;
 public class BuildingController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	IBuildingService buildingService;
-
-	public BuildingController() {
-		if (buildingService != null) {
-			buildingService = new BuildingService();
-		}
-	}
+	@Inject
+	private IBuildingService buildingService;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,15 +33,26 @@ public class BuildingController extends HttpServlet {
 		String url = "";
 		if (action.equals("LIST")) {
 			url = "/views/list.jsp";
-			BuildingSearchBuilder buildingSearchBuilder = initBuildingBuilder(model);
+			BuildingSearchBuilder buildingSearchBuilder = initBuildingSearchBuilder(model);
 			Pageble pageble = new PageRequest(null, null, null);
 			model.setListResult(buildingService.findAll(buildingSearchBuilder, pageble));
 		} else if (action.equals("EDIT")) {
 			url = "/views/edit.jsp";
 		}
+		request.setAttribute("districts", getDistrict());
+		request.setAttribute("buildingtypes", getBuildingType());
 		request.setAttribute("model", model);
 		RequestDispatcher rd = request.getRequestDispatcher(url);
 		rd.forward(request, response);
+	}
+
+	private BuildingSearchBuilder initBuildingSearchBuilder(BuildingDTO model) {
+		BuildingSearchBuilder buildingSearchBuilder = new BuildingSearchBuilder.Builder().setName(model.getName())
+				.setWard(model.getWard()).setAreaFrom(model.getAreaFrom()).setAreaTo(model.getAreaTo())
+				.setCostRentFrom(model.getCostRentFrom()).setCostRentTo(model.getCostRentTo())
+				.setBuildingTypes(model.getBuildingTypes()).build();
+
+		return buildingSearchBuilder;
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -53,12 +60,19 @@ public class BuildingController extends HttpServlet {
 
 	}
 
-	private BuildingSearchBuilder initBuildingBuilder(BuildingDTO model) {
-		BuildingSearchBuilder buildingSearchBuilder = new BuildingSearchBuilder.Builder().setName(model.getName())
-				.setNumberOfBasement(model.getNumberOfBasement()).setWard(model.getWard()).setStreet(model.getStreet())
-				.setAreaFrom(model.getAreaFrom()).setAreaTo(model.getAreaTo()).setCostRentFrom(model.getCostRentFrom())
-				.setCostRentTo(model.getCostRentTo()).build();
+	private Map<String, String> getDistrict() {
+		Map<String, String> result = new HashMap<String, String>();
+		result.put("QUAN_1", "Quận 1");
+		result.put("QUAN_2", "Quận 2");
+		result.put("QUAN_3", "Quận 3");
+		return result;
+	}
 
-		return buildingSearchBuilder;
+	private Map<String, String> getBuildingType() {
+		Map<String, String> result = new HashMap<String, String>();
+		result.put("TANG_TRET", "Tầng trệt");
+		result.put("NGUYEN_CAN", "Nguyên căn");
+		result.put("NOI_THAT", "Nội thất");
+		return result;
 	}
 }

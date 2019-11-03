@@ -1,15 +1,42 @@
 package com.laptrinhjavaweb.utils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.entity.BuildingEntity;
+import com.laptrinhjavaweb.entity.RentAreaEntity;
+import com.laptrinhjavaweb.paging.PageRequest;
+import com.laptrinhjavaweb.repository.IRentAreaRepository;
 
 // convert BuildingDTO <-> BuildingEntity
 public class BuildingConverter {
+
+	@Inject
+	private IRentAreaRepository rentAreaRepository;
+
 	public BuildingDTO convertToDTO(BuildingEntity buildingEntity) {
 		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(buildingEntity, BuildingDTO.class);
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("buildingid", buildingEntity.getId());
+
+		List<RentAreaEntity> rentAreas = rentAreaRepository.findAll(condition, new PageRequest(null, null, null));
+		List<String> areas = new ArrayList<>();
+		for (RentAreaEntity rentAreaEntity : rentAreas) {
+			areas.add(rentAreaEntity.getValue());
+		}
+		BuildingDTO result = modelMapper.map(buildingEntity, BuildingDTO.class);
+		if (areas.size() > 0) {
+			result.setRentArea(StringUtils.join(areas, ","));
+		}
+		return result;
 	}
 
 	public BuildingEntity convertToEntity(BuildingDTO buildingDTO) {

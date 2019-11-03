@@ -2,13 +2,13 @@ package com.laptrinhjavaweb.dto;
 
 public class BuildingDTO extends BaseDTO<BuildingDTO> {
 	private String name;
-	private Integer numberOfBasement;
-	private Integer buildingArea;
+	private String numberOfBasement;
+	private String buildingArea;
 	private String district;
 	private String ward;
 	private String street;
 	private String structure;
-	private Integer costRent;
+	private String costRent;
 	private String costDescription;
 	private String serviceCost;
 	private String carCost;
@@ -24,11 +24,18 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 	private String buildingType;
 	private String direction;
 	private String level;
-	private Integer costRentFrom;
-	private Integer costRentTo;
-	private Integer areaFrom;
-	private Integer areaTo;
+	private String costRentFrom;
+	private String costRentTo;
+	private String areaFrom;
+	private String areaTo;
 	private String[] buildingTypes;
+	private String address;
+	private String rentArea;
+
+	public String getAddress() {
+		this.address = this.ward + "," + this.street;
+		return address;
+	}
 
 	public String getName() {
 		return name;
@@ -38,19 +45,19 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 		this.name = name;
 	}
 
-	public Integer getNumberOfBasement() {
+	public String getNumberOfBasement() {
 		return numberOfBasement;
 	}
 
-	public void setNumberOfBasement(Integer numberOfBasement) {
+	public void setNumberOfBasement(String numberOfBasement) {
 		this.numberOfBasement = numberOfBasement;
 	}
 
-	public Integer getBuildingArea() {
+	public String getBuildingArea() {
 		return buildingArea;
 	}
 
-	public void setBuildingArea(Integer buildingArea) {
+	public void setBuildingArea(String buildingArea) {
 		this.buildingArea = buildingArea;
 	}
 
@@ -206,43 +213,43 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 		this.level = level;
 	}
 
-	public Integer getCostRent() {
+	public String getCostRent() {
 		return costRent;
 	}
 
-	public void setCostRent(Integer costRent) {
+	public void setCostRent(String costRent) {
 		this.costRent = costRent;
 	}
 
-	public Integer getCostRentFrom() {
+	public String getCostRentFrom() {
 		return costRentFrom;
 	}
 
-	public void setCostRentFrom(Integer costRentFrom) {
+	public void setCostRentFrom(String costRentFrom) {
 		this.costRentFrom = costRentFrom;
 	}
 
-	public Integer getCostRentTo() {
+	public String getCostRentTo() {
 		return costRentTo;
 	}
 
-	public void setCostRentTo(Integer costRentTo) {
+	public void setCostRentTo(String costRentTo) {
 		this.costRentTo = costRentTo;
 	}
 
-	public Integer getAreaFrom() {
+	public String getAreaFrom() {
 		return areaFrom;
 	}
 
-	public void setAreaFrom(Integer areaFrom) {
+	public void setAreaFrom(String areaFrom) {
 		this.areaFrom = areaFrom;
 	}
 
-	public Integer getAreaTo() {
+	public String getAreaTo() {
 		return areaTo;
 	}
 
-	public void setAreaTo(Integer areaTo) {
+	public void setAreaTo(String areaTo) {
 		this.areaTo = areaTo;
 	}
 
@@ -254,5 +261,12 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 		this.buildingTypes = buildingTypes;
 	}
 
-	
+	public String getRentArea() {
+		return rentArea;
+	}
+
+	public void setRentArea(String rentArea) {
+		this.rentArea = rentArea;
+	}
+
 }

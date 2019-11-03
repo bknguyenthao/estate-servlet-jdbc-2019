@@ -369,20 +369,24 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			Table table = this.zClass.getAnnotation(Table.class);
 			tableName = table.name();
 		}
-		StringBuilder result = new StringBuilder("select * from " + tableName + "where 1 = 1 ");
+		StringBuilder result = new StringBuilder(
+				"select * from " + tableName + " " + tableName.substring(0, 1) + " where 1 = 1 ");
 		if (properties != null && properties.size() > 0) {
 			String[] params = new String[properties.size()];
 			Object[] values = new Object[properties.size()];
-			int i = 0;
+			int j = 0;
 			for (Map.Entry<?, ?> item : properties.entrySet()) {
-				params[i] = (String) item.getKey();
-				values[i] = item.getValue();
-				i++;
+				params[j] = (String) item.getKey();
+				values[j] = item.getValue();
+				j++;
 			}
-			for (int j = 0; j < params.length; j++) {
-				if (values[i] instanceof String) {
+			for (int i = 0; i < params.length; i++) {
+				if (values[i] instanceof String && values[i].toString() != null
+						&& !values[i].toString().trim().isEmpty()) {
 					result.append(" and lower(" + params[i] + ") like '%" + values[i].toString().toLowerCase() + "%' ");
 				} else if (values[i] instanceof Integer) {
+					result.append(" and " + params[i] + " = " + values[i] + " ");
+				} else if (values[i] instanceof Long) {
 					result.append(" and " + params[i] + " = " + values[i] + " ");
 				}
 			}
