@@ -1,8 +1,6 @@
 package com.laptrinhjavaweb.controller.admin;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -15,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.paging.PageRequest;
-import com.laptrinhjavaweb.paging.Pageble;
+import com.laptrinhjavaweb.paging.Pageable;
 import com.laptrinhjavaweb.service.IBuildingService;
-import com.laptrinhjavaweb.utils.HandlerSubmit;
+import com.laptrinhjavaweb.utils.Static;
 
 @WebServlet(urlPatterns = { "/admin-building" })
 public class BuildingController extends HttpServlet {
@@ -28,20 +26,20 @@ public class BuildingController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		BuildingDTO model = HandlerSubmit.readDataSubmit(BuildingDTO.class, request);
+		BuildingDTO buildingSearch = Static.readDataFromRequest(BuildingDTO.class, request);
 		String action = request.getParameter("action");
 		String url = "";
 		if (action.equals("LIST")) {
 			url = "/views/list.jsp";
-			BuildingSearchBuilder buildingSearchBuilder = initBuildingSearchBuilder(model);
-			Pageble pageble = new PageRequest(null, null, null);
-			model.setListResult(buildingService.findAll(buildingSearchBuilder, pageble));
+			BuildingSearchBuilder buildingSearchBuilder = initBuildingSearchBuilder(buildingSearch);
+			Pageable pageble = new PageRequest(null, null, null);
+			request.setAttribute("buildings", buildingService.searchBuilding(buildingSearchBuilder, pageble));
 		} else if (action.equals("EDIT")) {
 			url = "/views/edit.jsp";
 		}
-		request.setAttribute("districts", getDistrict());
-		request.setAttribute("buildingtypes", getBuildingType());
-		request.setAttribute("model", model);
+		request.setAttribute("districts", Static.getDistrict());
+		request.setAttribute("buildingtypes", Static.getBuildingType());
+		request.setAttribute("buildingsearch", buildingSearch);
 		RequestDispatcher rd = request.getRequestDispatcher(url);
 		rd.forward(request, response);
 	}
@@ -58,21 +56,5 @@ public class BuildingController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-	}
-
-	private Map<String, String> getDistrict() {
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("QUAN_1", "Quận 1");
-		result.put("QUAN_2", "Quận 2");
-		result.put("QUAN_3", "Quận 3");
-		return result;
-	}
-
-	private Map<String, String> getBuildingType() {
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("TANG_TRET", "Tầng trệt");
-		result.put("NGUYEN_CAN", "Nguyên căn");
-		result.put("NOI_THAT", "Nội thất");
-		return result;
 	}
 }

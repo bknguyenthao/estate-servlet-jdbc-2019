@@ -1,8 +1,6 @@
 package com.laptrinhjavaweb.dto;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BaseDTO<T> {
 	private Long id;
@@ -10,10 +8,11 @@ public class BaseDTO<T> {
 	private String modifiedBy;
 	private Timestamp createdDate;
 	private Timestamp modifiedDate;
-	private int maxPageItem = 10;
-	private int currentPage = 1;
-	private String action;
-	private List<T> listResult = new ArrayList<T>();
+	
+//	private int maxPageItem = 10;
+//	private int currentPage = 1;
+//	private String action;
+//	private List<T> listResult = new ArrayList<T>();
 
 	public Long getId() {
 		return id;
@@ -55,36 +54,36 @@ public class BaseDTO<T> {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public int getMaxPageItem() {
-		return maxPageItem;
-	}
-
-	public void setMaxPageItem(int maxPageItem) {
-		this.maxPageItem = maxPageItem;
-	}
-
-	public int getCurrentPage() {
-		return currentPage;
-	}
-
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}
-
-	public String getAction() {
-		return action;
-	}
-
-	public void setAction(String action) {
-		this.action = action;
-	}
-
-	public List<T> getListResult() {
-		return listResult;
-	}
-
-	public void setListResult(List<T> listResult) {
-		this.listResult = listResult;
-	}
+//	public int getMaxPageItem() {
+//		return maxPageItem;
+//	}
+//
+//	public void setMaxPageItem(int maxPageItem) {
+//		this.maxPageItem = maxPageItem;
+//	}
+//
+//	public int getCurrentPage() {
+//		return currentPage;
+//	}
+//
+//	public void setCurrentPage(int currentPage) {
+//		this.currentPage = currentPage;
+//	}
+//
+//	public String getAction() {
+//		return action;
+//	}
+//
+//	public void setAction(String action) {
+//		this.action = action;
+//	}
+//
+//	public List<T> getListResult() {
+//		return listResult;
+//	}
+//
+//	public void setListResult(List<T> listResult) {
+//		this.listResult = listResult;
+//	}
 
 }

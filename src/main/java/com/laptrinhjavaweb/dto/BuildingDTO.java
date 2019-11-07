@@ -17,13 +17,14 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 	private String electriccityCost;
 	private String deposit;
 	private String payment;
-	private String timerent;
+	private String timeRent;
 	private String timeDecorator;
 	private String managerName;
 	private String managerPhone;
 	private String buildingType;
 	private String direction;
 	private String level;
+
 	private String costRentFrom;
 	private String costRentTo;
 	private String areaFrom;
@@ -157,12 +158,12 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 		this.payment = payment;
 	}
 
-	public String getTimerent() {
-		return timerent;
+	public String getTimeRent() {
+		return timeRent;
 	}
 
-	public void setTimerent(String timerent) {
-		this.timerent = timerent;
+	public void setTimeRent(String timeRent) {
+		this.timeRent = timeRent;
 	}
 
 	public String getTimeDecorator() {

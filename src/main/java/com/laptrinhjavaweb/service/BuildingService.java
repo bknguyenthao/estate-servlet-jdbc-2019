@@ -1,16 +1,17 @@
 package com.laptrinhjavaweb.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
+import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.entity.BuildingEntity;
-import com.laptrinhjavaweb.paging.Pageble;
+import com.laptrinhjavaweb.paging.Pageable;
 import com.laptrinhjavaweb.repository.IBuildingRepository;
-import com.laptrinhjavaweb.utils.BuildingConverter;
 
 public class BuildingService implements IBuildingService {
 
@@ -21,11 +22,10 @@ public class BuildingService implements IBuildingService {
 	private BuildingConverter buildingConverter;
 
 	@Override
-	public BuildingDTO save(BuildingDTO buildingDTO) {
+	public Long insert(BuildingDTO buildingDTO) {
 		BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
 		Long id = buildingRepository.insert(buildingEntity);
-		buildingDTO.setId(id);
-		return buildingDTO;
+		return id;
 	}
 
 	@Override
@@ -37,7 +37,6 @@ public class BuildingService implements IBuildingService {
 	@Override
 	public void delete(Long id) {
 		buildingRepository.delete(id);
-
 	}
 
 	@Override
@@ -51,9 +50,31 @@ public class BuildingService implements IBuildingService {
 	}
 
 	@Override
-	public List<BuildingDTO> findAll(BuildingSearchBuilder buildingSearchBuilder, Pageble pageble) {
+	public List<BuildingDTO> findAll() {
 		try {
-			List<BuildingEntity> buildingEntitys = buildingRepository.findAll(buildingSearchBuilder, pageble);
+			List<BuildingEntity> buildingEntitys = buildingRepository.findAll();
+			return buildingEntitys.stream().map(item -> buildingConverter.convertToDTO(item))
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<BuildingDTO> findByCondition(Map<String, Object> condition) {
+		try {
+			List<BuildingEntity> buildingEntitys = buildingRepository.findByCondition(condition);
+			return buildingEntitys.stream().map(item -> buildingConverter.convertToDTO(item))
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<BuildingDTO> searchBuilding(BuildingSearchBuilder buildingSearchBuilder, Pageable pageble) {
+		try {
+			List<BuildingEntity> buildingEntitys = buildingRepository.searchBuilding(buildingSearchBuilder, pageble);
 			return buildingEntitys.stream().map(item -> buildingConverter.convertToDTO(item))
 					.collect(Collectors.toList());
 		} catch (Exception e) {

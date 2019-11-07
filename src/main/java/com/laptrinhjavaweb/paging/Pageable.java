@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.paging;
 
-public interface Pageble {
+public interface Pageable {
 	Integer getPage();
 
 	Integer getOffset();

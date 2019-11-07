@@ -4,9 +4,8 @@ import java.util.List;
 
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.entity.BuildingEntity;
-import com.laptrinhjavaweb.paging.Pageble;
+import com.laptrinhjavaweb.paging.Pageable;
 
-public interface IBuildingRepository extends GenericJDBC<BuildingEntity> {
-//	Long insert(BuildingEntity buildingEntity);
-	List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder, Pageble pageble);
+public interface IBuildingRepository extends IBaseReposity<BuildingEntity> {
+	List<BuildingEntity> searchBuilding(BuildingSearchBuilder buildingSearchBuilder, Pageable pageable);
 }

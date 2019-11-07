@@ -1,13 +1,15 @@
 package com.laptrinhjavaweb.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.dto.BuildingDTO;
-import com.laptrinhjavaweb.paging.Pageble;
+import com.laptrinhjavaweb.paging.Pageable;
 
 public interface IBuildingService {
-	BuildingDTO save(BuildingDTO buildingDTO);
+
+	Long insert(BuildingDTO buildingDTO);
 
 	void update(BuildingDTO buildingDTO);
 
@@ -15,5 +17,9 @@ public interface IBuildingService {
 
 	BuildingDTO findById(Long id);
 
-	List<BuildingDTO> findAll(BuildingSearchBuilder buildingSearchBuilder, Pageble pageble);
+	List<BuildingDTO> findAll();
+
+	List<BuildingDTO> findByCondition(Map<String, Object> condition);
+
+	List<BuildingDTO> searchBuilding(BuildingSearchBuilder buildingSearchBuilder, Pageable pageable);
 }

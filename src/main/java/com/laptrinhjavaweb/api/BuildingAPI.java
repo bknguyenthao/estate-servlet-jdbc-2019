@@ -2,6 +2,7 @@ package com.laptrinhjavaweb.api;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,31 +10,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laptrinhjavaweb.dto.BuildingDTO;
-import com.laptrinhjavaweb.service.BuildingService;
 import com.laptrinhjavaweb.service.IBuildingService;
-import com.laptrinhjavaweb.utils.HandlerJSON;
+import com.laptrinhjavaweb.utils.Static;
 
 @WebServlet(urlPatterns = { "/api-admin-building" })
 public class BuildingAPI extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
+	@Inject
 	private IBuildingService buildingService;
-
-	public BuildingAPI() {
-		buildingService = new BuildingService();
-	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		// BuildingDTO buildingDTO =
-		// HandlerJSON.of(request.getReader()).toModel(BuildingDTO.class);
-		// get JSON from request then convert to DTO object
-		BuildingDTO buildingDTO = objectMapper.readValue(HandlerJSON.getJSON(request), BuildingDTO.class);
+		// get string from request type JSON then convert to DTO object
+		BuildingDTO buildingDTO = objectMapper.readValue(Static.getStringFromRequestJSON(request), BuildingDTO.class);
 
-		buildingDTO = buildingService.save(buildingDTO);
+		Long id = buildingService.insert(buildingDTO);
+		buildingDTO.setId(id);
 		objectMapper.writeValue(response.getOutputStream(), buildingDTO);
 	}
 
@@ -41,10 +37,8 @@ public class BuildingAPI extends HttpServlet {
 		ObjectMapper objectMapper = new ObjectMapper();
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		// BuildingDTO buildingDTO =
-		// HandlerJSON.of(request.getReader()).toModel(BuildingDTO.class);
-		// get JSON from request then convert to DTO object
-		BuildingDTO buildingDTO = objectMapper.readValue(HandlerJSON.getJSON(request), BuildingDTO.class);
+		// get string from request type JSON then convert to DTO object
+		BuildingDTO buildingDTO = objectMapper.readValue(Static.getStringFromRequestJSON(request), BuildingDTO.class);
 
 		buildingService.update(buildingDTO);
 		objectMapper.writeValue(response.getOutputStream(), "update success");
@@ -54,13 +48,6 @@ public class BuildingAPI extends HttpServlet {
 		ObjectMapper objectMapper = new ObjectMapper();
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		// BuildingDTO buildingDTO =
-		// HandlerJSON.of(request.getReader()).toModel(BuildingDTO.class);
-		// get JSON from request then convert to DTO object
-//		BuildingDTO buildingDTO = objectMapper.readValue(HandlerJSON.getJSON(request), BuildingDTO.class);
-//
-//		buildingService.delete(buildingDTO);
-//		objectMapper.writeValue(response.getOutputStream(), "delete success");
 
 		String idStr = request.getParameter("id");
 		if (idStr != null) {

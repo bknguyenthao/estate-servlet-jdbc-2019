@@ -1,14 +1,14 @@
 package com.laptrinhjavaweb.paging;
 
-public class PageRequest implements Pageble {
+public class PageRequest implements Pageable {
 
 	private Integer page;
-	private Integer maxPageItem;
+	private Integer size;
 	private Sorter sorter;
 
-	public PageRequest(Integer page, Integer maxPageItem, Sorter sorter) {
+	public PageRequest(Integer page, Integer size, Sorter sorter) {
 		this.page = page;
-		this.maxPageItem = maxPageItem;
+		this.size = size;
 		this.sorter = sorter;
 	}
 
@@ -19,15 +19,15 @@ public class PageRequest implements Pageble {
 
 	@Override
 	public Integer getOffset() {
-		if (page != null && maxPageItem != null) {
-			return (page - 1) * maxPageItem;
+		if (page != null && size != null) {
+			return (page - 1) * size;
 		}
 		return null;
 	}
 
 	@Override
 	public Integer getLimit() {
-		return maxPageItem;
+		return size;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.utils;
+package com.laptrinhjavaweb.converter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.entity.RentAreaEntity;
-import com.laptrinhjavaweb.paging.PageRequest;
 import com.laptrinhjavaweb.repository.IRentAreaRepository;
 
 // convert BuildingDTO <-> BuildingEntity
@@ -27,7 +26,7 @@ public class BuildingConverter {
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("buildingid", buildingEntity.getId());
 
-		List<RentAreaEntity> rentAreas = rentAreaRepository.findAll(condition, new PageRequest(null, null, null));
+		List<RentAreaEntity> rentAreas = rentAreaRepository.findByCondition(condition);
 		List<String> areas = new ArrayList<>();
 		for (RentAreaEntity rentAreaEntity : rentAreas) {
 			areas.add(rentAreaEntity.getValue());

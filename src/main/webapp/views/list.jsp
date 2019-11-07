@@ -43,7 +43,7 @@
 													<label><b>Tên Sản phẩm</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="name" value="${model.name}" />
+															name="name" value="${buildingsearch.name}" />
 													</div>
 												</div>
 											</div>
@@ -63,14 +63,14 @@
 													<label><b>Phường</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="ward" value="${model.ward}" />
+															name="ward" value="${buildingsearch.ward}" />
 													</div>
 												</div>
 												<div class="col-sm-4">
 													<label><b>Đường</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="street" value="${model.street}" />
+															name="street" value="${buildingsearch.street}" />
 													</div>
 												</div>
 											</div>
@@ -79,28 +79,28 @@
 													<label><b>Diện tích sàn</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="buildingArea" value="${model.buildingArea}" />
+															name="buildingArea" value="${buildingsearch.buildingArea}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label><b>Số tầng hầm</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="numberOfBasement" value="${model.numberOfBasement}" />
+															name="numberOfBasement" value="${buildingsearch.numberOfBasement}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label><b>Hướng</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="direction" value="${model.numberOfBasement}" />
+															name="direction" value="${buildingsearch.numberOfBasement}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label><b>Hạng</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="level" value="${model.level}" />
+															name="level" value="${buildingsearch.level}" />
 													</div>
 												</div>
 											</div>
@@ -109,28 +109,28 @@
 													<label><b>Diện tích từ</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="areaFrom" value="${model.areaFrom}" />
+															name="areaFrom" value="${buildingsearch.areaFrom}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label><b>Diện tích đến</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="areaTo" value="${model.areaTo}" />
+															name="areaTo" value="${buildingsearch.areaTo}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label><b>Giá thuê từ</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="costRentFrom" value="${model.costRentFrom}" />
+															name="costRentFrom" value="${buildingsearch.costRentFrom}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label><b>Giá thuê đến</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="costRentTo" value="${model.costRentTo}" />
+															name="costRentTo" value="${buildingsearch.costRentTo}" />
 													</div>
 												</div>
 											</div>
@@ -139,14 +139,14 @@
 													<label><b>Tên quản lý</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="managerName" value="${model.managerName}" />
+															name="managerName" value="${buildingsearch.managerName}" />
 													</div>
 												</div>
 												<div class="col-sm-4">
 													<label><b>Điện thoại quản lý</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="managerPhone" value="${model.managerPhone}" />
+															name="managerPhone" value="${buildingsearch.managerPhone}" />
 													</div>
 												</div>
 												<div class="col-sm-4">
@@ -225,7 +225,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="item" items="${model.listResult}">
+								<c:forEach var="item" items="${buildings}">
 									<tr>
 										<td>${item.name}</td>
 										<td>${item.address}</td>

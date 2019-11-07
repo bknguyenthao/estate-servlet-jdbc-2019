@@ -56,7 +56,7 @@ public class BuildingEntity extends BaseEntity {
 	private String payment;
 
 	@Column(name = "timerent")
-	private String timerent;
+	private String timeRent;
 
 	@Column(name = "timedecorator")
 	private String timeDecorator;
@@ -204,12 +204,12 @@ public class BuildingEntity extends BaseEntity {
 		this.payment = payment;
 	}
 
-	public String getTimerent() {
-		return timerent;
+	public String getTimeRent() {
+		return timeRent;
 	}
 
-	public void setTimerent(String timerent) {
-		this.timerent = timerent;
+	public void setTimeRent(String timeRent) {
+		this.timeRent = timeRent;
 	}
 
 	public String getTimeDecorator() {
