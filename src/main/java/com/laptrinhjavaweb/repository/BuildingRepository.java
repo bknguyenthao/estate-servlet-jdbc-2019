@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.paging.Pageable;
@@ -71,21 +73,20 @@ public class BuildingRepository extends BaseRepository<BuildingEntity> implement
 			}
 		}
 		// fiels search difficult: costrent, rentarea, buildingtype
-		if (buildingSearchBuilder.getCostRentFrom() != null
-				&& !buildingSearchBuilder.getCostRentFrom().trim().isEmpty()) {
+		if (StringUtils.isNotBlank(buildingSearchBuilder.getCostRentFrom())) {
 			result.append(" and costrent >= '" + buildingSearchBuilder.getCostRentFrom() + "' ");
 		}
 		if (buildingSearchBuilder.getCostRentTo() != null && !buildingSearchBuilder.getCostRentTo().trim().isEmpty()) {
 			result.append(" and costrent <= '" + buildingSearchBuilder.getCostRentTo() + "' ");
 		}
-		if ((buildingSearchBuilder.getAreaFrom() != null && !buildingSearchBuilder.getAreaFrom().trim().isEmpty())
-				|| (buildingSearchBuilder.getAreaTo() != null && !buildingSearchBuilder.getAreaTo().trim().isEmpty())) {
+		if (StringUtils.isNotBlank(buildingSearchBuilder.getAreaRentFrom())
+				|| StringUtils.isNotBlank(buildingSearchBuilder.getAreaRentTo())) {
 			result.append(" and exists (select * from rentarea ra where (ra.buildingid = bd.id");
-			if (buildingSearchBuilder.getAreaFrom() != null) {
-				result.append(" and ra.value >= '" + buildingSearchBuilder.getAreaFrom() + "' ");
+			if (StringUtils.isNotBlank(buildingSearchBuilder.getAreaRentFrom())) {
+				result.append(" and ra.value >= '" + buildingSearchBuilder.getAreaRentFrom() + "' ");
 			}
-			if (buildingSearchBuilder.getAreaTo() != null) {
-				result.append(" and ra.value <= '" + buildingSearchBuilder.getAreaTo() + "' ))");
+			if (StringUtils.isNotBlank(buildingSearchBuilder.getAreaRentTo())) {
+				result.append(" and ra.value <= '" + buildingSearchBuilder.getAreaRentTo() + "' ))");
 			}
 		}
 		if (buildingSearchBuilder.getBuildingTypes() != null && buildingSearchBuilder.getBuildingTypes().length > 0) {
@@ -113,13 +114,23 @@ public class BuildingRepository extends BaseRepository<BuildingEntity> implement
 		Map<String, Object> condition = new HashMap<String, Object>();
 		Field[] fields = BuildingSearchBuilder.class.getDeclaredFields();
 		for (Field field : fields) {
-			if (!field.getName().equals("buildingTypes") && !field.getName().startsWith("costRent")
-					&& !field.getName().startsWith("area")) {
+			boolean b1 = !field.getName().equals("buildingTypes");
+			boolean b2 = !field.getName().equals("costRentFrom");
+			boolean b3 = !field.getName().equals("costRentTo");
+			boolean b4 = !field.getName().equals("areaRentFrom");
+			boolean b5 = !field.getName().equals("areaRentTo");
+			if (b1 && b2 && b3 && b4 && b5) {
 				try {
 					field.setAccessible(true);
 					Object tmp = field.get(buildingSearchBuilder);
-					if (tmp != null) {
-						condition.put(field.getName().toLowerCase(), tmp);
+					if (tmp != null && tmp.toString().trim().length() > 0) {
+						boolean b6 = field.getName().equals("numberOfBasement");
+						boolean b7 = field.getName().equals("buildingArea");
+						if (b6 || b7) {
+							condition.put(field.getName().toLowerCase(), Integer.valueOf(tmp.toString()));
+						} else {
+							condition.put(field.getName().toLowerCase(), tmp);
+						}
 					}
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();

@@ -43,8 +43,8 @@ public class BuildingEntity extends BaseEntity {
 	@Column(name = "motorbikecost")
 	private String motorbikeCost;
 
-	@Column(name = "overtimeccost")
-	private String overtimecCost;
+	@Column(name = "overtimecost")
+	private String overtimeCost;
 
 	@Column(name = "electriccitycost")
 	private String electriccitycost;
@@ -69,10 +69,10 @@ public class BuildingEntity extends BaseEntity {
 
 	@Column(name = "buildingtype")
 	private String buildingType;
-	
+
 	@Column(name = "direction")
 	private String direction;
-	
+
 	@Column(name = "level")
 	private String level;
 
@@ -172,12 +172,12 @@ public class BuildingEntity extends BaseEntity {
 		this.motorbikeCost = motorbikeCost;
 	}
 
-	public String getOvertimecCost() {
-		return overtimecCost;
+	public String getOvertimeCost() {
+		return overtimeCost;
 	}
 
-	public void setOvertimecCost(String overtimecCost) {
-		this.overtimecCost = overtimecCost;
+	public void setOvertimeCost(String overtimeCost) {
+		this.overtimeCost = overtimeCost;
 	}
 
 	public String getElectriccitycost() {
@@ -260,5 +260,4 @@ public class BuildingEntity extends BaseEntity {
 		this.level = level;
 	}
 
-	
 }

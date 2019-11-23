@@ -9,7 +9,7 @@ import com.laptrinhjavaweb.annotation.Entity;
 public class BaseEntity {
 	@Column(name = "id")
 	private Long id;
-
+	
 	@Column(name = "createdby")
 	private String createdBy;
 

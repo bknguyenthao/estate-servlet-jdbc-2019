@@ -12,6 +12,8 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.laptrinhjavaweb.annotation.Column;
 import com.laptrinhjavaweb.annotation.Table;
 import com.laptrinhjavaweb.utils.Static;
@@ -246,7 +248,7 @@ public class BaseRepository<T> implements IBaseReposity<T> {
 	}
 
 	private String createSQLDelete() {
-		String sqlReturn = "delete from ";
+		String sqlReturn = "delete * from ";
 		String tableName = "";
 		if (this.zClass.isAnnotationPresent(Table.class)) {
 			Table table = this.zClass.getAnnotation(Table.class);
@@ -336,8 +338,7 @@ public class BaseRepository<T> implements IBaseReposity<T> {
 				j++;
 			}
 			for (int i = 0; i < params.length; i++) {
-				if (values[i] instanceof String && values[i].toString() != null
-						&& !values[i].toString().trim().isEmpty()) {
+				if (values[i] instanceof String && StringUtils.isNotBlank(values[i].toString())) {
 					result.append(" and lower(" + params[i] + ") like '%" + values[i].toString().toLowerCase() + "%' ");
 				} else if (values[i] instanceof Integer) {
 					result.append(" and " + params[i] + " = " + values[i] + " ");

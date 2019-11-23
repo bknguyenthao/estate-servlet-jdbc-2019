@@ -15,7 +15,7 @@ public class BaseDTO<T> {
 //	private List<T> listResult = new ArrayList<T>();
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {

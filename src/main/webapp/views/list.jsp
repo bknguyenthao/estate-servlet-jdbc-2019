@@ -54,7 +54,8 @@
 														<select class="form-control" name="district">
 															<option value="">-- Chọn quận --</option>
 															<c:forEach var="item" items="${districts}">
-																<option value="${item.key}">${item.value}</option>
+																<option value="${item.key}"
+																	${item.key == buildingsearch.district ? 'selected' : ''}>${item.value}</option>
 															</c:forEach>
 														</select>
 													</div>
@@ -79,21 +80,23 @@
 													<label><b>Diện tích sàn</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="buildingArea" value="${buildingsearch.buildingArea}" />
+															name="buildingArea"
+															value="${buildingsearch.buildingArea}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label><b>Số tầng hầm</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="numberOfBasement" value="${buildingsearch.numberOfBasement}" />
+															name="numberOfBasement"
+															value="${buildingsearch.numberOfBasement}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label><b>Hướng</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="direction" value="${buildingsearch.numberOfBasement}" />
+															name="direction" value="${buildingsearch.direction}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
@@ -106,24 +109,26 @@
 											</div>
 											<div class="form-group">
 												<div class="col-sm-3">
-													<label><b>Diện tích từ</b></label>
+													<label><b>Diện tích thuê từ</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="areaFrom" value="${buildingsearch.areaFrom}" />
+															name="areaRentFrom"
+															value="${buildingsearch.areaRentFrom}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
-													<label><b>Diện tích đến</b></label>
+													<label><b>Diện tích thuê đến</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="areaTo" value="${buildingsearch.areaTo}" />
+															name="areaRentTo" value="${buildingsearch.areaRentTo}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label><b>Giá thuê từ</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="costRentFrom" value="${buildingsearch.costRentFrom}" />
+															name="costRentFrom"
+															value="${buildingsearch.costRentFrom}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
@@ -146,7 +151,8 @@
 													<label><b>Điện thoại quản lý</b></label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="managerPhone" value="${buildingsearch.managerPhone}" />
+															name="managerPhone"
+															value="${buildingsearch.managerPhone}" />
 													</div>
 												</div>
 												<div class="col-sm-4">
@@ -167,9 +173,11 @@
 													<label><b>Chọn loại tòa nhà</b></label>
 													<div class="fg-line">
 														<c:forEach var="item" items="${buildingtypes}">
-															<label class="checkbox-inline"><input
-																type="checkbox" value="${item.key}"
-																name="buildingTypes">${item.value}</label>
+															<label class="checkbox-inline"> <input
+																type="checkbox" value="${item.key}" name="buildingTypes"
+																${fn:contains(fn:join(buildingsearch.buildingTypes,','), item.key) ? 'checked' : ''}>
+																${item.value}
+															</label>
 														</c:forEach>
 													</div>
 												</div>
@@ -192,21 +200,15 @@
 						<div class="table-btn-controls">
 							<div class="pull-right tableTools-container">
 								<div class="dt-buttons btn-overlap btn-group">
-									<a flag="info"
+									<a
 										class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
 										data-toggle="tooltip" title='Thêm tòa nhà'
-										href='<c:url value="/admin-building?action=EDIT"/>'> <span><i
+										href='<c:url value="/admin-building?action=ADD"/>'> <span><i
 											class="fa fa-plus-circle bigger-110 purple"></i></span>
 									</a>
-									<button type="button"
-										class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-										data-toggle="tooltip" title='Xóa tòa nhà'>
-										<span><i class="fa fa-trash-o bigger-110 pink"></i></span>
-									</button>
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 				<!-- 				table -->
@@ -217,11 +219,16 @@
 								<tr>
 									<th>Tên sản phẩm</th>
 									<th>Địa chỉ</th>
-									<th>Giá thuê</th>
+									<th>Diện tích sàn</th>
+									<th>Số tầng hầm</th>
+									<th>Hướng</th>
+									<th>Hạng</th>
 									<th>Diện tích thuê</th>
+									<th>Giá thuê</th>
 									<th>Loại tòa nhà</th>
 									<th>Tên quản lý</th>
 									<th>SĐT quản lý</th>
+									<th>Thao tác</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -229,11 +236,26 @@
 									<tr>
 										<td>${item.name}</td>
 										<td>${item.address}</td>
-										<td>${item.costRent}</td>
+										<td>${item.buildingArea}</td>
+										<td>${item.numberOfBasement}</td>
+										<td>${item.direction}</td>
+										<td>${item.level}</td>
 										<td>${item.rentArea}</td>
+										<td>${item.costRent}</td>
 										<td>${item.buildingType}</td>
 										<td>${item.managerName}</td>
 										<td>${item.managerPhone}</td>
+										<td><a class="btn btn-xs btn-info"
+											data-toggle="tooltip" title="Edit"
+											href='<c:url value="/admin-building?action=EDIT&buildingId=${item.id}"/>'>
+												<i class="ace-icon fa fa-pencil" aria-hidden="true"></i>
+										</a>
+										<a class="btn btn-xs btn-danger"
+											data-toggle="tooltip" title="Delete"
+											href='<c:url value="/admin-building?action=DELETE&buildingId=${item.id}"/>'>
+												<i class="ace-icon fa fa-trash-o" aria-hidden="true"></i>
+										</a>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>

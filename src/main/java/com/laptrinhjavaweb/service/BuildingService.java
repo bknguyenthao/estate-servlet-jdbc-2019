@@ -1,17 +1,22 @@
 package com.laptrinhjavaweb.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.entity.BuildingEntity;
+import com.laptrinhjavaweb.entity.RentAreaEntity;
 import com.laptrinhjavaweb.paging.Pageable;
 import com.laptrinhjavaweb.repository.IBuildingRepository;
+import com.laptrinhjavaweb.repository.IRentAreaRepository;
 
 public class BuildingService implements IBuildingService {
 
@@ -21,10 +26,23 @@ public class BuildingService implements IBuildingService {
 	@Inject
 	private BuildingConverter buildingConverter;
 
+	@Inject
+	private IRentAreaRepository rentAreaRepository;
+
 	@Override
 	public Long insert(BuildingDTO buildingDTO) {
 		BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
+		buildingEntity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+		buildingEntity.setCreatedBy("");
+		buildingEntity.setBuildingType(StringUtils.join(buildingDTO.getBuildingTypes(), ","));
 		Long id = buildingRepository.insert(buildingEntity);
+		// Save rentarea
+		for (String item : buildingDTO.getRentArea().split(",")) {
+			RentAreaEntity rentAreaEntity = new RentAreaEntity();
+			rentAreaEntity.setValue(item);
+			rentAreaEntity.setBuildingId(id);
+			rentAreaRepository.insert(rentAreaEntity);
+		}
 		return id;
 	}
 

@@ -13,7 +13,7 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 	private String serviceCost;
 	private String carCost;
 	private String motorbikeCost;
-	private String overtimecCost;
+	private String overtimeCost;
 	private String electriccityCost;
 	private String deposit;
 	private String payment;
@@ -27,14 +27,15 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 
 	private String costRentFrom;
 	private String costRentTo;
-	private String areaFrom;
-	private String areaTo;
+	private String areaRentFrom;
+	private String areaRentTo;
 	private String[] buildingTypes;
-	private String address;
+
 	private String rentArea;
+	private String address;
 
 	public String getAddress() {
-		this.address = this.ward + "," + this.street;
+		this.address = this.street + ", " + this.ward + ", " + this.district;
 		return address;
 	}
 
@@ -126,12 +127,12 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 		this.motorbikeCost = motorbikeCost;
 	}
 
-	public String getOvertimecCost() {
-		return overtimecCost;
+	public String getOvertimeCost() {
+		return overtimeCost;
 	}
 
-	public void setOvertimecCost(String overtimecCost) {
-		this.overtimecCost = overtimecCost;
+	public void setOvertimeCost(String overtimeCost) {
+		this.overtimeCost = overtimeCost;
 	}
 
 	public String getElectriccityCost() {
@@ -238,20 +239,20 @@ public class BuildingDTO extends BaseDTO<BuildingDTO> {
 		this.costRentTo = costRentTo;
 	}
 
-	public String getAreaFrom() {
-		return areaFrom;
+	public String getAreaRentFrom() {
+		return areaRentFrom;
 	}
 
-	public void setAreaFrom(String areaFrom) {
-		this.areaFrom = areaFrom;
+	public void setAreaRentFrom(String areaFrom) {
+		this.areaRentFrom = areaFrom;
 	}
 
-	public String getAreaTo() {
-		return areaTo;
+	public String getAreaRentTo() {
+		return areaRentTo;
 	}
 
-	public void setAreaTo(String areaTo) {
-		this.areaTo = areaTo;
+	public void setAreaRentTo(String areaTo) {
+		this.areaRentTo = areaTo;
 	}
 
 	public String[] getBuildingTypes() {

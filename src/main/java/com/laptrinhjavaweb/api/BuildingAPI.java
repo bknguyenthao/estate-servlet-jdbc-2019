@@ -27,10 +27,8 @@ public class BuildingAPI extends HttpServlet {
 		response.setContentType("application/json");
 		// get string from request type JSON then convert to DTO object
 		BuildingDTO buildingDTO = objectMapper.readValue(Static.getStringFromRequestJSON(request), BuildingDTO.class);
-
-		Long id = buildingService.insert(buildingDTO);
-		buildingDTO.setId(id);
-		objectMapper.writeValue(response.getOutputStream(), buildingDTO);
+		buildingService.insert(buildingDTO);
+		objectMapper.writeValue(response.getOutputStream(), "insert success");
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -39,7 +37,6 @@ public class BuildingAPI extends HttpServlet {
 		response.setContentType("application/json");
 		// get string from request type JSON then convert to DTO object
 		BuildingDTO buildingDTO = objectMapper.readValue(Static.getStringFromRequestJSON(request), BuildingDTO.class);
-
 		buildingService.update(buildingDTO);
 		objectMapper.writeValue(response.getOutputStream(), "update success");
 	}
